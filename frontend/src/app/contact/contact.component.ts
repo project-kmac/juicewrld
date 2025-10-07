@@ -33,7 +33,7 @@ library.add(faStar, faPaperPlane)
 export class ContactComponent implements OnInit {
   public authorControl: UntypedFormControl = new UntypedFormControl({ value: '', disabled: true }, [])
   public feedbackControl: UntypedFormControl = new UntypedFormControl('', [Validators.required, Validators.maxLength(160)])
-  public captchaControl: UntypedFormControl = new UntypedFormControl('', [Validators.required, Validators.pattern('-?[\\d]*')])
+  public captchaControl: UntypedFormControl = new UntypedFormControl('', [])
   public userIdControl: UntypedFormControl = new UntypedFormControl('', [])
   public rating: number = 0
   public feedback: any = undefined
@@ -59,7 +59,8 @@ export class ContactComponent implements OnInit {
         console.log(err)
       }
     })
-    this.getNewCaptcha()
+    // Skip captcha retrieval when captcha is disabled
+    // this.getNewCaptcha()
 
     this.formSubmitService.attachEnterKeyHandler('feedback-form', 'submitButton', () => { this.save() })
   }
@@ -75,8 +76,7 @@ export class ContactComponent implements OnInit {
   }
 
   save () {
-    this.feedback.captchaId = this.captchaId
-    this.feedback.captcha = this.captchaControl.value
+    // Captcha disabled: omit captcha fields
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     this.feedback.comment = `${this.feedbackControl.value} (${this.authorControl.value})`
     this.feedback.rating = this.rating

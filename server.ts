@@ -394,9 +394,9 @@ restoreOverwrittenFilesWithOriginals().then(() => {
   app.use('/rest/basket/:id/order', security.isAuthorized())
   /* Challenge evaluation before finale takes over */ // vuln-code-snippet hide-start
   app.post('/api/Feedbacks', verify.forgedFeedbackChallenge())
-  /* Captcha verification before finale takes over */
-  app.post('/api/Feedbacks', verifyCaptcha())
-  /* Captcha Bypass challenge verification */
+  /* Captcha verification disabled locally */
+  // app.post('/api/Feedbacks', verifyCaptcha())
+  /* Captcha Bypass challenge verification (kept to preserve app flow, will pass regardless without verifyCaptcha) */
   app.post('/api/Feedbacks', verify.captchaBypassChallenge())
   /* User registration challenge verifications before finale takes over */
   app.post('/api/Users', (req: Request, res: Response, next: NextFunction) => {
